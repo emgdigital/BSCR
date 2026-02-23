@@ -7,11 +7,11 @@ import { useState, useEffect } from 'react';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [showCookies, setShowCookies] = useState(false);
   const [cookieView, setCookieView] = useState<'main' | 'prefs'>('main');
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // New state for mobile menu
 
   const goldWhiteGold = "bg-gradient-to-r from-[#D1A546] via-white to-[#D1A546]";
   const goldTextClass = `text-transparent bg-clip-text ${goldWhiteGold}`;
 
-  // Check for existing consent and handle delay
   useEffect(() => {
     const consent = localStorage.getItem('bswc_cookie_consent');
     if (!consent) {
@@ -45,12 +45,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         {/* --- GLOBAL NAVBAR --- */}
-        <nav className="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
+        <nav className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/5">
           <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="/" className="relative h-10 w-32 md:w-44 flex items-center">
+            <a href="/" className="relative h-10 w-32 md:w-44 flex items-center z-50">
               <Image src="/logowebsmall.png" alt="BSWC Logo" fill className="object-contain object-left" />
             </a>
 
+            {/* Desktop Links */}
             <div className="hidden lg:flex gap-8 text-[11px] uppercase tracking-[0.25em] font-semibold text-gray-300">
               {navLinks.map((link) => (
                 <a key={link.name} href={link.href} className="hover:text-[#D1A546] transition-all italic underline-offset-8 hover:underline">
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               ))}
             </div>
 
+            {/* Desktop Button */}
             <button className={`hidden lg:flex items-center gap-2 p-px rounded-full ${goldWhiteGold} transition-all hover:shadow-[0_0_20px_rgba(97,7,170,0.8)]`}>
               <div className="bg-[#3A0353] px-6 py-2.5 rounded-full flex items-center gap-2">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -68,6 +70,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>PARTICIPANT LOGIN</span>
               </div>
             </button>
+
+            {/* Mobile Menu Toggle Button */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden z-50 p-2 text-gray-300 hover:text-[#D1A546] transition-colors"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {isMenuOpen ? (
+                  <path d="M18 6L6 18M6 6l12 12" /> // X icon
+                ) : (
+                  <path d="M4 6h16M4 12h16M4 18h16" /> // Hamburger icon
+                )}
+              </svg>
+            </button>
+          </div>
+
+          {/* Mobile Menu Dropdown */}
+          <div className={`lg:hidden absolute top-20 left-0 w-full bg-black/95 backdrop-blur-2xl border-b border-white/10 transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 visible h-auto pb-10' : 'opacity-0 invisible h-0 overflow-hidden'}`}>
+            <div className="flex flex-col items-center gap-6 pt-10">
+              {navLinks.map((link) => (
+                <a 
+                  key={link.name} 
+                  href={link.href} 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-[12px] uppercase tracking-[0.3em] font-bold text-gray-300 hover:text-[#D1A546]"
+                >
+                  {link.name}
+                </a>
+              ))}
+              <button className={`mt-4 flex items-center gap-2 p-px rounded-full ${goldWhiteGold}`}>
+                <div className="bg-[#3A0353] px-8 py-3 rounded-full flex items-center gap-2">
+                  <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>LOGIN</span>
+                </div>
+              </button>
+            </div>
           </div>
         </nav>
 
