@@ -53,20 +53,20 @@ export default function FormatPage() {
       {/* --- CHRONOLOGICAL TIMELINE & CARDS --- */}
       <div className="relative max-w-6xl w-full">
         
-        {/* Timeline Line */}
-        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-linear-to-b from-[#D1A546] via-[#3A0353] to-[#D1A546] opacity-30" />
+        {/* Timeline Line: 2px thick, Brighter, and ends before trophy */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-30 md:bottom-45 w-0.5 bg-linear-to-b from-[#D1A546] via-[#D1A546] to-[#d1a546] opacity-60 z-0" />
 
         <div className="flex flex-col gap-16 md:gap-32">
           {phases.map((phase, index) => (
-            <div key={index} className="relative pl-10 md:pl-0">
+            <div key={index} className="relative w-full flex flex-col items-center">
               
-              {/* Timeline Dot */}
-              <div className="absolute left-\[-4px\] md:left-1/2 -top-2 md:-translate-x-1/2 w-4 h-4 md:w-8 md:h-8 rounded-full bg-black border-2 border-[#D1A546] z-20 flex items-center justify-center shadow-[0_0_15px_#D1A546]">
-                 <div className="w-1 md:w-2 h-1 md:h-2 rounded-full bg-white" />
+              {/* Timeline Dot: Centered */}
+              <div className="relative mb-8 md:mb-0 md:absolute md:left-1/2 md:-top-2 md:-translate-x-1/2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-black border-2 border-[#D1A546] z-20 flex items-center justify-center shadow-[0_0_15px_#D1A546]">
+                 <div className="w-1.5 md:w-2 h-1.5 md:h-2 rounded-full bg-white" />
               </div>
 
               {/* THE CARD */}
-              <div className="bg-black/80 backdrop-blur-md border border-[#3A0353] md:border-2 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-2xl hover:border-[#D1A546]/50 transition-all duration-700">
+              <div className="w-full bg-black/80 backdrop-blur-md border border-[#3A0353] md:border-2 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-2xl hover:border-[#D1A546]/50 transition-all duration-700 z-10">
                 <div className="p-6 md:p-12">
                   <div className="flex flex-col lg:flex-row gap-8 md:gap-16">
                     
@@ -122,12 +122,7 @@ export default function FormatPage() {
                           </div>
                         </div>
                       </div>
-
-                      <div className="absolute -bottom-4 -right-4 font-black text-[5rem] md:text-[8rem] text-white/5 select-none pointer-events-none uppercase italic leading-none hidden sm:block">
-                         {phase.number}
-                      </div>
                     </div>
-
                   </div>
                 </div>
               </div>
