@@ -101,7 +101,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               ))}
               <button className={`mt-4 flex items-center gap-2 p-px rounded-full ${goldWhiteGold}`}>
                 <div className="bg-[#3A0353] px-8 py-3 rounded-full flex items-center gap-2">
-                  <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>LOGIN</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  </svg>  
+                  <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>Participants area</span>
                 </div>
               </button>
             </div>
