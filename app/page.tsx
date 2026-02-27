@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link'; // Added Link import
+import Link from 'next/link';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,7 +41,6 @@ export default function Home() {
     { name: 'Qualifiers', href: '/qualifiers' },
     { name: 'Winners', href: '/winners' },
     { name: 'Guidelines', href: '/guidelines' },
-  
   ];
 
   const goldWhiteGold = "bg-gradient-to-r from-[#D1A546] via-white to-[#D1A546]";
@@ -73,13 +72,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-[#D1A546]/30 overflow-x-hidden relative scroll-smooth">
       
-      {/* --- BACKGROUND LAYER --- */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Image src="/weblogo2.png" alt="Bachata Background" fill className="object-cover opacity-50 blur-[2px]" priority />
         <div className="absolute inset-0 bg-linear-to-b from-black via-black/50 to-black" />
       </div>
 
-      {/* --- NAVBAR --- */}
       <nav className="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="relative h-10 w-32 md:w-44 flex items-center">
@@ -92,21 +89,21 @@ export default function Home() {
             ))}
           </div>
 
-          <button className={`hidden lg:flex items-center gap-2 p-px rounded-full ${goldWhiteGold} transition-all hover:shadow-[0_0_20px_rgba(97,7,170,0.8)]`}>
+          {/* Fixed Participant Area Button */}
+          <Link href="/register" className={`hidden lg:flex items-center gap-2 p-px rounded-full ${goldWhiteGold} transition-all hover:shadow-[0_0_20px_rgba(97,7,170,0.8)]`}>
             <div className="bg-[#3A0353] px-6 py-2.5 rounded-full flex items-center gap-2">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                <rect x="5" y="11" width="14" height="10" rx="2" ry="2"></rect>
+                <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
               </svg>
-              <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>PARTICIPANT LOGIN</span>
+              <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>PARTICIPANT AREA</span>
             </div>
-          </button>
+          </Link>
 
           <button className="lg:hidden text-[#D1A546] text-2xl" onClick={() => setIsMenuOpen(true)}>☰</button>
         </div>
       </nav>
 
-      {/* --- HERO CONTENT --- */}
       <main className="relative z-10 pt-48 pb-20 flex flex-col items-center justify-center px-6 text-center min-h-screen">
         
         <div className="inline-block px-6 py-2 border-2 border-[#3A0353] rounded-sm mb-10 bg-[#6107AA]/5 shadow-[0_0_15px_rgba(97,7,170,0.6)]">
@@ -124,7 +121,6 @@ export default function Home() {
           </span>
         </h1>
 
-        {/* COUNTDOWN */}
         <div className="flex gap-4 md:gap-10 justify-center mb-16 flex-wrap">
           {[
             { label: 'Days', value: timeLeft.days },
@@ -139,17 +135,15 @@ export default function Home() {
           ))}
         </div>
 
-        <Link href="/register">
-          <button className={`relative p-[1.5px] rounded-full ${goldWhiteGold} transition-all hover:scale-105 hover:shadow-[0_0_25px_rgba(97,7,170,0.9)] active:scale-95`}>
-            <div className="bg-[#3A0353] py-4 px-12 rounded-full">
-              <span className={`text-[12px] font-black uppercase italic tracking-widest ${goldTextClass}`}>
-                Register for Qualifiers
-              </span>
-            </div>
-          </button>
+        {/* Fixed Hero Registration Button */}
+        <Link href="/register" className={`relative p-[1.5px] rounded-full ${goldWhiteGold} transition-all hover:scale-105 hover:shadow-[0_0_25px_rgba(97,7,170,0.9)] active:scale-95`}>
+          <div className="bg-[#3A0353] py-4 px-12 rounded-full">
+            <span className={`text-[12px] font-black uppercase italic tracking-widest ${goldTextClass}`}>
+              Register for Qualifiers
+            </span>
+          </div>
         </Link>
 
-        {/* EXPLORE CONCEPT SECTION */}
         <div className="flex flex-col items-center mt-20">
           <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-white mb-4 italic font-bold">
             Explore more our concept
@@ -162,7 +156,6 @@ export default function Home() {
         </div>
       </main>
 
-      {/* --- LEAGUE INFO --- */}
       <section id="league-info" className="relative z-10 py-32 px-6 bg-black/40 backdrop-blur-sm scroll-mt-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -176,7 +169,7 @@ export default function Home() {
                 The Bachata Social Cup Romania is designed and created to celebrate the heart of social dance: **Social Connection**. No rehearsed routines. No choreographed shows. 
               </p>
               <p className="text-gray-100 text-[16px] leading-relaxed mb-10 text-left text-balance">
-                Following the Jack&Jill competition format, as a participant, you will be paired with random partners, whether you are a follower or a leader, and dance to music selected and played live by our DJ's. We are looking for the most versatile, connected, and musical social dancers in the country.
+                Following the Jack&Jill competition format, as a participant, you will be paired with random partners, whether you are a follower or a leader, and dance to music selected and played live by our DJ&apos;s. We are looking for the most versatile, connected, and musical social dancers in the country.
               </p>
             </div>
             
@@ -196,7 +189,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- ORGANIZER REQUEST --- */}
       <section className="relative z-10 py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="relative group overflow-hidden rounded-4xl md:rounded-[3rem] border border-[#3A0353] bg-black/60 backdrop-blur-md p-8 md:p-16 shadow-2xl transition-all duration-700 hover:shadow-[0_0_50px_rgba(97,7,170,0.3)] hover:border-[#D1A546]/30">
@@ -209,20 +201,19 @@ export default function Home() {
                   Host a <span className="text-gray-500">Qualifier</span>
                 </h1>
                 <p className="text-gray-100 text-sm md:text-lg leading-relaxed italic mb-10 max-w-xl mx-auto lg:mx-0">
-                  Elevate your local event by joining the official circuit of Bachata Social Cup Romania. We provide the judging framework, marketing support, and the direct path for your dancers to reach the national finals. You don't need to worry about a thing. Our team will deal with all the logistics, while you get to host an unforgettable event in your city.
+                  Elevate your local event by joining the official circuit of Bachata Social Cup Romania. We provide the judging framework, marketing support, and the direct path for your dancers to reach the national finals. You don&apos;t need to worry about a thing. Our team will deal with all the logistics, while you get to host an unforgettable event in your city.
                 </p>
                 <p className="text-gray-100 text-[13px] md:text-lg leading-relaxed italic mb-10 max-w-xl mx-auto lg:mx-0">
                   If you are interested in hosting a qualifier or want to learn more about the partnership benefits, please reach out to us. We are excited to collaborate with passionate organizers across Romania to make this league a nationwide celebration of bachata culture.
                 </p>
-                {/* --- ADDED LINK WRAPPER --- */}
-                <Link href="/requesthost" className="inline-block">
-                  <button className={`relative p-px rounded-full ${goldWhiteGold} transition-all hover:scale-105 active:scale-95`}>
-                    <div className="bg-[#3A0353] px-10 py-4 rounded-full flex items-center justify-center">
-                      <span className={`text-[11px] font-black uppercase tracking-widest ${goldTextClass}`}>
-                        Request Hosting Form
-                      </span>
-                    </div>
-                  </button>
+                
+                {/* Fixed Hosting Form Button */}
+                <Link href="/requesthost" className={`relative p-px rounded-full ${goldWhiteGold} transition-all hover:scale-105 active:scale-95 inline-block`}>
+                  <div className="bg-[#3A0353] px-10 py-4 rounded-full flex items-center justify-center">
+                    <span className={`text-[11px] font-black uppercase tracking-widest ${goldTextClass}`}>
+                      Request Hosting Form
+                    </span>
+                  </div>
                 </Link>
               </div>
               <div className="hidden lg:block w-1/3 relative aspect-square opacity-20 group-hover:opacity-40 transition-opacity duration-700 group-hover:scale-110">
@@ -233,7 +224,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- COMPETITOR JOURNEY --- */}
       <section className="relative z-10 py-32 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-[#D1A546] font-bold tracking-[0.3em] uppercase text-[13px] mb-8">Competitor Path</h2>
@@ -242,7 +232,6 @@ export default function Home() {
           </h1>
 
           <div className="relative">
-            {/* Horizontal Line - Using absolute centering with a gradient */}
             <div className="hidden md:block absolute top-10 left-[12.5%] w-[75%] h-px bg-linear-to-r from-transparent via-[#D1A546]/50 to-transparent z-0" />
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-4 relative z-10">
