@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link'; // Added Link import
+import Link from 'next/link';
 
 export default function QualifiersPage() {
   const goldWhiteGold = "bg-gradient-to-r from-[#D1A546] via-white to-[#D1A546]";
@@ -16,8 +16,8 @@ export default function QualifiersPage() {
       venue: "Grand Ballroom Center",
       status: "Registration Opens Soon",
       isOpen: true,
-      banner: "/finalBanner.png", // 1080x1350 vertical banner
-      slug: "bucharest" // Added slug to match your [slug] folder data
+      banner: "/finalBanner.png",
+      slug: "bucharest"
     },
     {
       city: "To be announced",
@@ -140,8 +140,8 @@ export default function QualifiersPage() {
                     <span className="text-[12px] uppercase tracking-wide truncate font-medium">{item.venue}</span>
                  </div>
 
-                 {/* Premium Button - WRAPPED WITH LINK */}
-                 <Link href={`/qualifiers/${item.slug}`}>
+                 {/* Premium Button - ALWAYS LEADS TO SLUG PAGE */}
+                 <Link href={item.slug === "#" ? "#" : `/qualifiers/${item.slug}`}>
                     <button className="w-full group/btn relative p-px rounded-xl overflow-hidden shadow-lg hover:shadow-[#D1A546]/10 transition-all duration-300">
                         <div className={`absolute inset-0 ${goldWhiteGold} opacity-20 group-hover/btn:opacity-100 transition-opacity`} />
                         <div className="relative bg-[#0d0d0d] group-hover/btn:bg-transparent py-4 rounded-xl transition-colors">

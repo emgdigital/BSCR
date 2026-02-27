@@ -31,9 +31,9 @@ export default function FormatPage() {
       title: "Grand Finals",
       subtitle: "The Championship Round",
       desc: "The elite finalists are paired for full songs. This is the ultimate showcase of social dance prowess, timing, and that 'X-Factor' that defines a champion.",
-      leaders: "4",
-      followers: "4",
-      songs: "4",
+      leaders: "TBA",
+      followers: "TBA",
+      songs: "TBA",
       switches: "0",
     }
   ];

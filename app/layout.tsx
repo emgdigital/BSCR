@@ -3,21 +3,37 @@
 import "./globals.css";
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { supabase } from '@/utils/supabase'; // Ensure this path is correct
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [showCookies, setShowCookies] = useState(false);
   const [cookieView, setCookieView] = useState<'main' | 'prefs'>('main');
   const [isMenuOpen, setIsMenuOpen] = useState(false); // New state for mobile menu
+  const [user, setUser] = useState<any>(null); // Track auth state
 
   const goldWhiteGold = "bg-gradient-to-r from-[#D1A546] via-white to-[#D1A546]";
   const goldTextClass = `text-transparent bg-clip-text ${goldWhiteGold}`;
 
   useEffect(() => {
+    // Check initial session
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+    };
+    getInitialSession();
+
+    // Listen for auth changes (Login/Logout)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
     const consent = localStorage.getItem('bswc_cookie_consent');
     if (!consent) {
       const timer = setTimeout(() => setShowCookies(true), 2000);
       return () => clearTimeout(timer);
     }
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleConsent = (type: 'all' | 'essential') => {
@@ -31,7 +47,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     { name: 'Qualifiers', href: '/qualifiers' },
     { name: 'Winners', href: '/winners' },
     { name: 'Guidelines', href: '/guidelines' },
-    { name: 'Contact us', href: '#' },
   ];
 
   return (
@@ -58,18 +73,37 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   {link.name}
                 </a>
               ))}
+              {/* Show Dashboard tab only if user is logged in */}
+              {user && (
+                <a href="/dashboard" className="text-[#D1A546] hover:text-white transition-all italic underline-offset-8 hover:underline">
+                  Dashboard
+                </a>
+              )}
             </div>
 
-            {/* Desktop Button */}
-            <button className={`hidden lg:flex items-center gap-2 p-px rounded-full ${goldWhiteGold} transition-all hover:shadow-[0_0_20px_rgba(97,7,170,0.8)]`}>
+            {/* Desktop Button - Condition applied here */}
+            <a 
+              href={user ? "/dashboard" : "/register"} 
+              className={`hidden lg:flex items-center gap-2 p-px rounded-full ${goldWhiteGold} transition-all hover:shadow-[0_0_20px_rgba(209,165,70,0.4)]`}
+            >
               <div className="bg-[#3A0353] px-6 py-2.5 rounded-full flex items-center gap-2">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-                <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>PARTICIPANT LOGIN</span>
+                {user ? (
+                   // Icon for Dashboard (Grid)
+                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                     <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                   </svg>
+                ) : (
+                  // FIXED LOCK SVG
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="5" y="11" width="14" height="10" rx="2" ry="2"></rect>
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                  </svg>
+                )}
+                <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>
+                  {user ? "DASHBOARD" : "PARTICIPANT LOGIN"}
+                </span>
               </div>
-            </button>
+            </a>
 
             {/* Mobile Menu Toggle Button */}
             <button 
@@ -99,14 +133,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   {link.name}
                 </a>
               ))}
-              <button className={`mt-4 flex items-center gap-2 p-px rounded-full ${goldWhiteGold}`}>
+              
+              {/* Dynamic Mobile Button */}
+              <a 
+                href={user ? "/dashboard" : "/register"} 
+                onClick={() => setIsMenuOpen(false)}
+                className={`mt-4 flex items-center gap-2 p-px rounded-full ${goldWhiteGold}`}
+              >
                 <div className="bg-[#3A0353] px-8 py-3 rounded-full flex items-center gap-2">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  </svg>  
-                  <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>Participants area</span>
+                  {user ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                  ) : (
+                    // FIXED LOCK SVG FOR MOBILE
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="5" y="11" width="14" height="10" rx="2" ry="2"></rect>
+                      <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                    </svg>
+                  )}
+                  <span className={`text-[10px] font-bold tracking-widest ${goldTextClass}`}>
+                    {user ? "Dashboard" : "Participants area"}
+                  </span>
                 </div>
-              </button>
+              </a>
             </div>
           </div>
         </nav>

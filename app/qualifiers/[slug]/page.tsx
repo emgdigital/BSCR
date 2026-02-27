@@ -1,9 +1,10 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { supabase } from '../../../utils/supabase'; // Ensure this path is correct
 
 const QUALIFIER_DATA: Record<string, any> = {
   "bucharest": {
@@ -18,9 +19,8 @@ const QUALIFIER_DATA: Record<string, any> = {
     occupiedFollowers: 0,
     maxLeaders: 40,
     maxFollowers: 40,
-    registrationLink: "https://bachatasocialworldcup.com/", 
+    registrationLink: "https://bachatasocialworldcup.com/qualifiers?category=standalone", 
     participantsLink: "",
-    // Array to handle multiple organisers
     organizers: [
       {
         name: "BtoB Bachata",
@@ -41,13 +41,31 @@ const QUALIFIER_DATA: Record<string, any> = {
 
 export default function QualifierTemplate() {
   const params = useParams();
+  const router = useRouter();
   const slug = params.slug as string;
   const event = QUALIFIER_DATA[slug];
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsLoggedIn(!!session);
+    };
+    checkUser();
+  }, []);
 
   if (!event) return <div className="min-h-screen bg-black flex items-center justify-center text-white italic font-mortend">Event Not Found</div>;
 
   const goldWhiteGold = "bg-gradient-to-r from-[#D1A546] via-white to-[#D1A546]";
   const goldTextClass = `text-transparent bg-clip-text ${goldWhiteGold}`;
+
+  const handleRegisterClick = (e: React.MouseEvent) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      router.push('/register');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black/80 text-white selection:bg-[#D1A546]/30">
@@ -132,13 +150,16 @@ export default function QualifierTemplate() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <a 
-                  href={event.registrationLink} 
-                  target="_blank" 
+                  href={isLoggedIn ? event.registrationLink : "#"} 
+                  onClick={handleRegisterClick}
+                  target={isLoggedIn ? "_blank" : "_self"}
                   rel="noopener noreferrer"
                   className={`flex-1 relative p-px rounded-xl ${goldWhiteGold} transition-all hover:scale-[1.02] active:scale-95 shadow-2xl block`}
                 >
                   <div className="bg-[#3A0353] py-4 rounded-[11px] flex items-center justify-center">
-                    <span className="text-white text-[11px] font-black uppercase tracking-widest italic">Register Now</span>
+                    <span className="text-white text-[11px] font-black uppercase tracking-widest italic">
+                      {isLoggedIn ? "Register Now" : "Login to Register"}
+                    </span>
                   </div>
                 </a>
                 <a 

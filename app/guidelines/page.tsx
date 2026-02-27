@@ -75,6 +75,8 @@ export default function GuidelinesPage() {
         {/* Section: Judging Criteria (Visual Grid) */}
         <section className="mb-20">
           <h2 className="font-mortend text-2xl uppercase italic mb-8 text-center">Judging <span className={goldTextClass}>Criteria</span></h2>
+          <h2 className="text-center text-sm uppercase italic tracking-widest text-gray-200 mt-8 mb-8">**CONFLICT OF INTERESTS**</h2>
+          <h2 className="text-center text-[15px] italic tracking-widest text-gray-200 mb-10">Judges will not evaluate dancers they have personal or professional relationships with. In such cases, Judges must formally declare that they will remain impartial, even in cases of a conflict of interest — defined as any potential personal benefit, whether direct, indirect, real, or perceived.</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {[
               { title: "Technique", desc: "Precision and movement mastery." },
@@ -90,7 +92,7 @@ export default function GuidelinesPage() {
             ))}
           </div>
           <p className="mt-16 text-center text-base text-gray-200 italic max-w-2xl mx-auto">
-            Note: Unlike standard J&J, we prioritize **Connection**. In the Finals, judges may dance with you to evaluate your lead/follow adaptability in real-time.
+            Note: In our standard J&J, we prioritize **Connection**. In the Finals, judges may dance with you to evaluate your lead/follow adaptability in real-time.
           </p>
         </section>
 

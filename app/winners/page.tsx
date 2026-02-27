@@ -82,7 +82,7 @@ export default function WinnersPage() {
            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 rounded-xl border border-white/5 bg-white/5">
                  <p className="text-[8px] uppercase tracking-widest text-gray-500 mb-1">Coming In</p>
-                 <p className="font-bold text-white uppercase italic text-sm">October 2026</p>
+                 <p className="font-bold text-white uppercase italic text-sm">TBA SOON</p>
               </div>
               <div className="p-4 rounded-xl border border-white/5 bg-white/5">
                  <p className="text-[8px] uppercase tracking-widest text-gray-500 mb-1">Edition</p>

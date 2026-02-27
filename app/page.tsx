@@ -41,7 +41,7 @@ export default function Home() {
     { name: 'Qualifiers', href: '/qualifiers' },
     { name: 'Winners', href: '/winners' },
     { name: 'Guidelines', href: '/guidelines' },
-    { name: 'Contact us', href: '#' },
+  
   ];
 
   const goldWhiteGold = "bg-gradient-to-r from-[#D1A546] via-white to-[#D1A546]";
@@ -139,13 +139,15 @@ export default function Home() {
           ))}
         </div>
 
-        <button className={`relative p-[1.5px] rounded-full ${goldWhiteGold} transition-all hover:scale-105 hover:shadow-[0_0_25px_rgba(97,7,170,0.9)] active:scale-95`}>
-          <div className="bg-[#3A0353] py-4 px-12 rounded-full">
-            <span className={`text-[12px] font-black uppercase italic tracking-widest ${goldTextClass}`}>
-              Register for Qualifiers
-            </span>
-          </div>
-        </button>
+        <Link href="/register">
+          <button className={`relative p-[1.5px] rounded-full ${goldWhiteGold} transition-all hover:scale-105 hover:shadow-[0_0_25px_rgba(97,7,170,0.9)] active:scale-95`}>
+            <div className="bg-[#3A0353] py-4 px-12 rounded-full">
+              <span className={`text-[12px] font-black uppercase italic tracking-widest ${goldTextClass}`}>
+                Register for Qualifiers
+              </span>
+            </div>
+          </button>
+        </Link>
 
         {/* EXPLORE CONCEPT SECTION */}
         <div className="flex flex-col items-center mt-20">
@@ -174,7 +176,7 @@ export default function Home() {
                 The Bachata Social Cup Romania is designed and created to celebrate the heart of social dance: **Social Connection**. No rehearsed routines. No choreographed shows. 
               </p>
               <p className="text-gray-100 text-[16px] leading-relaxed mb-10 text-left text-balance">
-                Following the Jack&Jill competition format, as a participant, you will be paired with random partners, wether you ara a follower or a leader, and dance to music selected and played live by our DJs. We are looking for the most versatile, connected, and musical social dancers in the country.
+                Following the Jack&Jill competition format, as a participant, you will be paired with random partners, whether you are a follower or a leader, and dance to music selected and played live by our DJ's. We are looking for the most versatile, connected, and musical social dancers in the country.
               </p>
             </div>
             
