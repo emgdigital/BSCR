@@ -100,7 +100,6 @@ export default function GuidelinesPage() {
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
           <div className="lg:col-span-2 bg-[#3A0353]/20 border border-[#D1A546]/20 p-8 rounded-[2.5rem]">
             <h2 className="font-mortend text-[#D1A546] text-lg uppercase italic mb-6">The Scoring System</h2>
-            <p className="text-[17px] text-gray-200 mb-6 italic">Powered by <span className="text-white font-bold">The Bachata Council</span> for real-time transparency.</p>
             <div className="space-y-4">
                <div className="flex gap-4 items-start">
                   <span className="text-[#D1A546] font-bold">01</span>

@@ -15,11 +15,11 @@ const QUALIFIER_DATA: Record<string, any> = {
     registrationFee: "100 RON",
     status: "Registration Open",
     totalSpots: 80,
-    occupiedLeaders: 5,
-    occupiedFollowers: 2,
+    occupiedLeaders: 6,
+    occupiedFollowers: 3,
     maxLeaders: 40,
     maxFollowers: 40,
-    registrationLink: "https://bachatasocialworldcup.com/qualifiers?category=standalone", 
+    registrationLink: "https://bachatasocialworldcup.com/qualifiers/bachata-romanian-social-cup-2026", 
     participantsLink: "",
     organizers: [
       {
