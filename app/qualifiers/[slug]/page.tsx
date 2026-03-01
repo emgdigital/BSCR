@@ -15,7 +15,7 @@ const QUALIFIER_DATA: Record<string, any> = {
     registrationFee: "100 RON",
     status: "Registration Open",
     totalSpots: 80,
-    occupiedLeaders: 9,
+    occupiedLeaders: 10,
     occupiedFollowers: 6,
     maxLeaders: 40,
     maxFollowers: 40,

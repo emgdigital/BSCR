@@ -10,6 +10,7 @@ export default function RegisterPage() {
   const [submitted, setSubmitted] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(false);
   const [errors, setErrors] = useState<string[]>([]); // New state for validation
+  const [agreedToTerms, setAgreedToTerms] = useState(false); // Legal state
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -108,6 +109,19 @@ export default function RegisterPage() {
 
   const handleImageChange = (file: File | undefined) => {
     if (file) {
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+      if (!allowedTypes.includes(file.type)) {
+        alert("Only JPG and PNG formats are allowed.");
+        return;
+      }
+
+      if (file.size > maxSize) {
+        alert("Image is too large. Max size is 5MB.");
+        return;
+      }
+
       setFormData({ 
         ...formData, 
         profileImage: file, 
@@ -140,6 +154,11 @@ export default function RegisterPage() {
   };
 
   const handleFinalSubmit = async () => {
+    if (!agreedToTerms) {
+      setErrors([...errors, "terms"]);
+      return;
+    }
+
     setLoading(true);
     try {
       const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -164,12 +183,14 @@ export default function RegisterPage() {
           .from('avatars')
           .upload(filePath, file);
 
-        if (!uploadError) {
-          const { data: { publicUrl } } = supabase.storage
-            .from('avatars')
-            .getPublicUrl(filePath);
-          publicImageUrl = publicUrl;
+        if (uploadError) {
+          throw new Error("Image upload failed. Please try a different photo or smaller file size.");
         }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(filePath);
+        publicImageUrl = publicUrl;
       }
 
       const { error: dbError } = await supabase
@@ -362,11 +383,14 @@ export default function RegisterPage() {
                   <span className="text-[10px] text-gray-400 uppercase tracking-widest font-bold px-6 text-center">
                     Take a Photo or <br/> Choose from Library
                   </span>
+                  <span className="text-[13px] text-gray-400 uppercase tracking-widest">
+                    MAX 5MB | JPG or PNG
+                  </span>
                 </div>
               )}
             </div>
             {errors.includes("imagePreview") && <RequiredMessage />}
-            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={(e) => handleImageChange(e.target.files?.[0])} />
+            <input type="file" ref={fileInputRef} className="hidden" accept=".jpg,.jpeg,.png" onChange={(e) => handleImageChange(e.target.files?.[0])} />
             {formData.imagePreview && (
               <div className="flex flex-col gap-4 animate-in fade-in zoom-in duration-300">
                 <input type="range" min="1" max="3" step="0.1" value={zoom} onChange={(e) => setZoom(parseFloat(e.target.value))} className="w-full accent-[#D1A546] cursor-pointer" />
@@ -434,6 +458,31 @@ export default function RegisterPage() {
                     )}
                   </div>
                 </div>
+            </div>
+
+            {/* LEGAL CONSENT BLOCK */}
+            <div className="w-full mt-4 flex flex-col gap-4 text-left">
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <input 
+                  type="checkbox" 
+                  checked={agreedToTerms}
+                  onChange={(e) => {
+                    setAgreedToTerms(e.target.checked);
+                    setErrors(errors.filter(err => err !== "terms"));
+                  }}
+                  className="mt-1 w-5 h-5 rounded border-[#D1A546] accent-[#D1A546] cursor-pointer"
+                />
+                <span className="text-[11px] text-gray-400 uppercase leading-tight tracking-tighter">
+                  I agree to the <a href="/terms" target="_blank" className="text-[#D1A546] underline hover:text-white transition-colors">Terms & Conditions</a>, 
+                  <a href="/privacy" target="_blank" className="text-[#D1A546] underline ml-1 hover:text-white transition-colors">Privacy Policy</a>, and 
+                  <a href="/waiver" target="_blank" className="text-[#D1A546] underline ml-1 hover:text-white transition-colors">Liability Waiver</a>.
+                </span>
+              </label>
+              {errors.includes("terms") && (
+                <p className="text-red-500 text-[10px] uppercase font-bold animate-pulse ml-8">
+                  You must accept to register
+                </p>
+              )}
             </div>
 
             <GoldenButton label={loading ? "Registering..." : "Confirm & Register"} onClick={handleFinalSubmit} disabled={loading} />

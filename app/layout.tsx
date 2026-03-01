@@ -5,6 +5,74 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/utils/supabase'; // Ensure this path is correct
 
+// --- NEW COMPONENT: LEGAL GATEKEEPER ---
+function LegalGatekeeper({ userId }: { userId: string }) {
+  const [needsAgreement, setNeedsAgreement] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const checkTerms = async () => {
+      // Check if the user has already accepted in the registrations table
+      const { data, error } = await supabase
+        .from('registrations')
+        .select('terms_accepted')
+        .eq('id', userId)
+        .single();
+
+      if (data && data.terms_accepted === false) {
+        setNeedsAgreement(true);
+      }
+    };
+    if (userId) checkTerms();
+  }, [userId]);
+
+  const handleAgree = async () => {
+    setLoading(true);
+    const { error } = await supabase
+      .from('registrations')
+      .update({ terms_accepted: true })
+      .eq('id', userId);
+
+    if (!error) setNeedsAgreement(false);
+    setLoading(false);
+  };
+
+  if (!needsAgreement) return null;
+
+  return (
+    <div className="fixed inset-0 z-10000 bg-black/90 backdrop-blur-2xl flex items-center justify-center px-6">
+      <div className="max-w-md w-full bg-[#1A0225] border border-[#D1A546]/50 p-8 md:p-10 rounded-[3rem] shadow-[0_0_60px_rgba(209,165,70,0.2)] text-center animate-in zoom-in-95 duration-300">
+        <div className="w-16 h-16 bg-[#D1A546]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D1A546" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        
+        <h2 className="font-mortend text-[#D1A546] text-xl mb-4 italic uppercase tracking-tight">Updated <span className="text-white">Policies</span></h2>
+        
+        <p className="text-gray-400 text-[11px] uppercase tracking-wider mb-8 leading-relaxed">
+          To continue to the participant area, please confirm you agree to our 
+          <a href="/terms" target="_blank" className="text-white underline mx-1 hover:text-[#D1A546]">Terms</a> and 
+          <a href="/privacy" target="_blank" className="text-white underline mx-1 hover:text-[#D1A546]">Privacy Policy</a>. 
+          This ensures your data and media rights are protected.
+        </p>
+        
+        <button 
+          onClick={handleAgree}
+          disabled={loading}
+          className="w-full p-px rounded-full bg-linear-to-r from-[#D1A546] via-white to-[#D1A546] transition-transform active:scale-95 disabled:opacity-50"
+        >
+          <div className="bg-[#3A0353] py-4 rounded-full flex justify-center items-center">
+            <span className="text-white text-[10px] font-black uppercase tracking-[0.2em]">
+              {loading ? "Processing..." : "I Accept & Continue"}
+            </span>
+          </div>
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [showCookies, setShowCookies] = useState(false);
   const [cookieView, setCookieView] = useState<'main' | 'prefs'>('main');
@@ -164,6 +232,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* --- PAGE CONTENT --- */}
         <div className="relative z-10">
           {children}
+          {/* TRIGGER LEGAL GATEKEEPER IF USER IS LOGGED IN */}
+          {user && <LegalGatekeeper userId={user.id} />}
         </div>
 
         {/* --- GLOBAL FOOTER --- */}
@@ -180,8 +250,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
 
               <nav className="flex flex-row mt-7 gap-10">
-                <a href="#" className="text-[9px] uppercase tracking-[0.2em] text-gray-500 hover:text-[#D1A546]">Privacy Policy</a>
-                <a href="#" className="text-[9px] uppercase tracking-[0.2em] text-gray-500 hover:text-[#D1A546]">Terms & Conditions</a>
+                <a href="/privacy" className="text-[9px] uppercase tracking-[0.2em] text-gray-500 hover:text-[#D1A546] transition-colors">Privacy Policy</a>
+                <a href="/terms" className="text-[9px] uppercase tracking-[0.2em] text-gray-500 hover:text-[#D1A546] transition-colors">Terms & Conditions</a>
+                <a href="/waiver" className="text-[9px] uppercase tracking-[0.2em] text-gray-500 hover:text-[#D1A546] transition-colors">Liability Waiver</a>
               </nav>
 
               <div className="flex gap-6 mt-7">
