@@ -5,22 +5,29 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/utils/supabase'; // Ensure this path is correct
 
-// --- NEW COMPONENT: LEGAL GATEKEEPER ---
+// --- UPDATED COMPONENT: LEGAL GATEKEEPER ---
 function LegalGatekeeper({ userId }: { userId: string }) {
   const [needsAgreement, setNeedsAgreement] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const checkTerms = async () => {
-      // Check if the user has already accepted in the registrations table
+      // 1. Instant check: If they already agreed this session, don't even check DB
+      if (sessionStorage.getItem(`bswc_agreed_${userId}`)) return;
+
+      // 2. Check Database
       const { data, error } = await supabase
         .from('registrations')
         .select('terms_accepted')
         .eq('id', userId)
         .single();
 
+      // 3. ONLY SHOW if terms_accepted is explicitly FALSE
       if (data && data.terms_accepted === false) {
         setNeedsAgreement(true);
+      } else if (data?.terms_accepted === true) {
+        // If already true in DB, cache it for this session to stop future checks
+        sessionStorage.setItem(`bswc_agreed_${userId}`, 'true');
       }
     };
     if (userId) checkTerms();
@@ -28,12 +35,24 @@ function LegalGatekeeper({ userId }: { userId: string }) {
 
   const handleAgree = async () => {
     setLoading(true);
+
+    // 4. OPTIMISTIC HIDE: Remove from UI immediately for better UX
+    sessionStorage.setItem(`bswc_agreed_${userId}`, 'true');
+    setNeedsAgreement(false);
+
+    // 5. UPDATE DATABASE
     const { error } = await supabase
       .from('registrations')
       .update({ terms_accepted: true })
       .eq('id', userId);
 
-    if (!error) setNeedsAgreement(false);
+    if (error) {
+      console.error("Legal Update Failed:", error.message);
+      // If DB update failed (likely RLS), revert session so it asks again on refresh
+      sessionStorage.removeItem(`bswc_agreed_${userId}`);
+      setNeedsAgreement(true);
+    }
+    
     setLoading(false);
   };
 
