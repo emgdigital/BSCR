@@ -113,7 +113,7 @@ export default function RegisterPage() {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
       if (!allowedTypes.includes(file.type)) {
-        alert("Only JPG and PNG formats are allowed.");
+        alert("Only JPG, JPEG and PNG formats are allowed.");
         return;
       }
 
