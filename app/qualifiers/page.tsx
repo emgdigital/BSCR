@@ -14,7 +14,7 @@ export default function QualifiersPage() {
       date: "April 3-5th",
       year: "2026",
       venue: "Grand Ballroom Center",
-      status: "Registration Opens Soon",
+      status: "Registration Open",
       isOpen: true,
       banner: "/finalBanner.png",
       slug: "bucharest"
