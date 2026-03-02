@@ -13,7 +13,7 @@ export default function QualifiersPage() {
       event: "National Kick-off",
       date: "April 3-5th",
       year: "2026",
-      venue: "Grand Ballroom Center",
+      venue: "NORD Event Center by Globalworth",
       status: "Registration Open",
       isOpen: true,
       banner: "/finalBanner.png",
