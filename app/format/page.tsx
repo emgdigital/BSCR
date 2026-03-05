@@ -20,7 +20,7 @@ export default function FormatPage() {
       number: "02",
       title: "Semi-Finals",
       subtitle: "The Pressure Phase",
-      desc: "The field is narrowed based on the firstscoring. In this phase, judges can focus intensely on evaluating the participants according to the competition criteria to decide who access the final round.",
+      desc: "The field is narrowed based on the first scoring. In this phase, judges can focus intensely on evaluating the participants according to the competition criteria to decide who access the final round.",
       leaders: "TBA",
       followers: "TBA",
       songs: "TBA",
@@ -145,7 +145,7 @@ export default function FormatPage() {
              </div>
           </div>
           <h5 className="font-mortend text-[#D1A546] text-xl md:text-2xl tracking-widest italic uppercase">Champion Crowned</h5>
-          <p className="text-gray-600 text-[8px] md:text-[10px] tracking-[0.3em] md:tracking-[0.5em] uppercase mt-2 md:mt-4 text-center text-balance">Bachata Social Cup Romania 2026</p>
+          <p className="text-gray-300 text-[8px] md:text-[10px] tracking-[0.3em] md:tracking-[0.5em] uppercase mt-2 md:mt-4 text-center text-balance">Bachata Social Cup Romania 2026</p>
         </div>
 
       </div>
