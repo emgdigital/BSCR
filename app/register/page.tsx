@@ -161,9 +161,22 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
+      // FIX: Mapping "Lead" to "leader" and "Follow" to "follower" to match your SQL trigger
+      const mappedRole = formData.role.toLowerCase() === 'lead' ? 'leader' : 'follower';
+
+      // 1. Sign up with metadata for the trigger
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          data: {
+            full_name: `${formData.firstName} ${formData.lastName}`,
+            role: mappedRole,
+            country_code: formData.country.substring(0, 2).toUpperCase(), // Simplified code fetch
+            gender: mappedRole === 'leader' ? 'male' : 'female', // Basic mapping
+            // Note: avatar_url will be updated in step 2
+          }
+        }
       });
 
       if (authError) throw authError;
@@ -191,6 +204,12 @@ export default function RegisterPage() {
           .from('avatars')
           .getPublicUrl(filePath);
         publicImageUrl = publicUrl;
+
+        // Update the profile with the avatar URL now that we have it
+        await supabase
+          .from('profiles')
+          .update({ avatar_url: publicImageUrl })
+          .eq('id', userId);
       }
 
       const { error: dbError } = await supabase
