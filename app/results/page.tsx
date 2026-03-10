@@ -42,7 +42,13 @@ export default function ResultsPage() {
       'ita': 'it',
       'fra': 'fr',
       'deu': 'de',
-      'ger': 'de'
+      'ger': 'de',
+      'bul': 'bg',
+      'bgr': 'bg',
+      'can': 'ca',
+      'ukr': 'ua',
+      'svk': 'sk',
+      'pol': 'pl'
     };
 
     if (mapping[clean]) return mapping[clean];
