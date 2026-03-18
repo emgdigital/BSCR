@@ -140,7 +140,7 @@ export default function QualifierTemplate() {
                 <div>
                   <div className="flex justify-between text-[13px] uppercase tracking-[0.2em] mb-2 font-bold">
                     <span>Followers: {event.occupiedFollowers} / {event.maxFollowers}</span>
-                    <span className="text-red-500 animate-pulse italic">Limited spots!</span>
+                    <span className="text-red-500 animate-pulse italic">Last 7 spots!</span>
                   </div>
                   <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-[#D1A546]" style={{ width: `${(event.occupiedFollowers/event.maxFollowers)*100}%` }} />
