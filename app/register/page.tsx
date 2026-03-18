@@ -172,7 +172,8 @@ export default function RegisterPage() {
           data: {
             full_name: `${formData.firstName} ${formData.lastName}`,
             role: mappedRole,
-            country_code: formData.country.substring(0, 2).toUpperCase(), // Simplified code fetch
+            // FIX: Sending the full country name in lowercase so the trigger can match it correctly
+            country: formData.country.toLowerCase(), 
             gender: mappedRole === 'leader' ? 'male' : 'female', // Basic mapping
             // Note: avatar_url will be updated in step 2
           }
@@ -218,7 +219,8 @@ export default function RegisterPage() {
           id: userId,
           full_name: `${formData.firstName} ${formData.lastName}`,
           email: formData.email,
-          country: formData.country,
+          // FIX: Consistency in registrations table (lowercase)
+          country: formData.country.toLowerCase(),
           city: formData.city,
           birthdate: formData.birthdate || null,
           role: formData.role,
