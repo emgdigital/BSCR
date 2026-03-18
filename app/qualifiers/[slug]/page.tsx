@@ -16,7 +16,7 @@ const QUALIFIER_DATA: Record<string, any> = {
     status: "Registration Open",
     totalSpots: 80,
     occupiedLeaders: 34,
-    occupiedFollowers: 40,
+    occupiedFollowers: 41,
     maxLeaders: 41,
     maxFollowers: 41,
     registrationLink: "https://bachatasocialworldcup.com/qualifiers/bachata-romanian-social-cup-2026", 
