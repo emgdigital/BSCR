@@ -15,7 +15,7 @@ const QUALIFIER_DATA: Record<string, any> = {
     registrationFee: "100 RON",
     status: "Registration Open",
     totalSpots: 80,
-    occupiedLeaders: 40,
+    occupiedLeaders: 41,
     occupiedFollowers: 41,
     maxLeaders: 41,
     maxFollowers: 41,
@@ -140,7 +140,7 @@ export default function QualifierTemplate() {
                 <div>
                   <div className="flex justify-between text-[13px] uppercase tracking-[0.2em] mb-2 font-bold">
                     <span>Followers: {event.occupiedFollowers} / {event.maxFollowers}</span>
-                    <span className="text-red-500 animate-pulse italic">Last spot!</span>
+                    <span className="text-red-500 animate-pulse italic">SOLD OUT! Waiting list available on our instagram</span>
                   </div>
                   <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-[#D1A546]" style={{ width: `${(event.occupiedFollowers/event.maxFollowers)*100}%` }} />
