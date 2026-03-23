@@ -72,6 +72,27 @@ export default function RegisterPage() {
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+  // NEW: HANDLE FORGOT PASSWORD
+  const handleForgotPassword = async () => {
+    if (!formData.email || !validateEmail(formData.email)) {
+      alert("Please enter a valid email address first.");
+      setErrors(["email"]);
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
+      redirectTo: `${window.location.origin}/update-password`,
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("A password reset link has been sent to your email.");
+    }
+    setLoading(false);
+  };
+
   // VALIDATION HELPER
   const handleNext = () => {
     const currentErrors: string[] = [];
@@ -316,9 +337,22 @@ export default function RegisterPage() {
                 {showPassword ? "Hide" : "Show"}
               </button>
               {errors.includes("password") && <RequiredMessage />}
+              
+              {/* NEW: FORGOT PASSWORD BUTTON */}
+              {isLoginMode && (
+                <div className="flex justify-end mt-2">
+                  <button 
+                    type="button" 
+                    onClick={handleForgotPassword}
+                    className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-[#D1A546] transition-colors font-bold"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
+              )}
             </div>
             
-            <GoldenButton label={isLoginMode ? "Sign In" : "Continue"} type="submit" />
+            <GoldenButton label={isLoginMode ? (loading ? "Checking..." : "Sign In") : "Continue"} type="submit" disabled={isLoginMode && loading} />
             <p className="text-center text-[12px] text-gray-400 uppercase tracking-widest mt-2">
                 {isLoginMode ? "New to the circuit?" : "Already have an account?"}
                 <button type="button" onClick={() => setIsLoginMode(!isLoginMode)} className="ml-2 text-[#D1A546] font-bold hover:underline">{isLoginMode ? "Register Here" : "Sign In Here"}</button>

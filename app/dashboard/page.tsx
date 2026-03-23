@@ -20,6 +20,9 @@ export default function DashboardPage() {
   const valueStyle = "text-sm text-gray-300 capitalize";
   const inputStyle = "w-full bg-white/5 border border-white/10 rounded-lg p-2 text-sm text-white focus:border-[#D1A546] outline-none transition-all";
 
+  // Check if current user is admin
+  const isAdmin = user?.role === 'admin';
+
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     router.push('/register');
@@ -203,6 +206,20 @@ export default function DashboardPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 -mt-16 md:-mt-20 relative z-10">
+        
+        {/* ADMIN ACTION BUTTON */}
+        {isAdmin && (
+          <div className="mb-8 flex justify-center md:justify-end">
+            <button 
+              onClick={() => router.push('/admin')}
+              className="flex items-center gap-3 px-8 py-3 bg-[#D1A546] text-black rounded-full font-bold text-[10px] uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(209,165,70,0.3)] hover:scale-105 transition-all active:scale-95"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Registration Check
+            </button>
+          </div>
+        )}
+
         <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
           <div className="relative group">
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#D1A546] overflow-hidden bg-[#222] shadow-[0_0_30px_rgba(58,3,83,0.5)] relative">
@@ -337,6 +354,7 @@ export default function DashboardPage() {
                         <option value="Lead">Lead</option>
                         <option value="Follow">Follow</option>
                         <option value="Both">Both</option>
+                        <option value="admin">Admin</option>
                       </select>
                     ) : (
                       <p className="text-xs font-bold text-[#D1A546] uppercase tracking-wider">{user?.role || 'N/A'}</p>
@@ -392,7 +410,9 @@ export default function DashboardPage() {
                  Security
                </h3>
                <p className={labelStyle}>Status</p>
-               <p className="text-sm font-bold text-[#D1A546]">Verified Dancer</p>
+               <p className="text-sm font-bold text-[#D1A546]">
+                 {isAdmin ? 'System Administrator' : 'Verified Dancer'}
+               </p>
             </section>
 
             <button 
