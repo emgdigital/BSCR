@@ -14,7 +14,7 @@ export default function QualifiersPage() {
       date: "April 3-5th",
       year: "2026",
       venue: "NORD Event Center by Globalworth",
-      status: "Registration Open",
+      status: "Event Finished",
       isOpen: true,
       banner: "/finalBanner.png",
       slug: "bucharest"
